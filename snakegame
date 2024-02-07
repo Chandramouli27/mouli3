@@ -1,0 +1,199 @@
+///Snake game
+#include <iostream>
+#include <string>
+#include <Windows.h>
+#include <cstdlib>
+#include<ctime>
+#include <conio.h>
+#include<vector>
+using namespace std;
+int A=5,B=5;
+COORD pos;
+vector<COORD> snakebody;	
+int row,col;
+int score=1;
+int move1;
+void board();
+void movesnake();
+void randomnum()
+{
+	srand(time(0));
+        row=(rand()%28)+1;
+        col=(rand()%48)+1;
+}
+void board()
+{
+ for(int i=0;i<31;i++)
+ {
+ 	cout<<"\t\t";
+   for(int j=0;j<51;j++)
+   {
+   	if(i==0||i==30)
+   	{
+   		cout<<"-";
+	   }
+	   else if(j==0||j==50)
+	   {
+	   	cout<<"|";
+	   }
+	   else if(i==row&&j==col)
+	   {
+	   	cout<<"x";
+	   }
+	   else 
+	   {
+	     bool snakecheck = false;
+	     for(int k=0;k<snakebody.size();k++)
+	     {
+	     	if(i==snakebody[k].X&&j==snakebody[k].Y)
+	     	{
+	     		cout<<"O";
+	     		snakecheck=true;
+	     		break;
+			 }
+		 }
+		 if(!snakecheck)
+		 {
+		 	cout<<" ";
+		 }
+	   }
+	   }
+	   cout<<endl;	
+ }
+ cout<<"SCORE: "<<score;
+}
+void movesnake(){
+	switch(move1)
+	{
+		case 72:
+			{
+		     A--;
+		     if(A==0)
+		     {
+		     	system("cls");
+		     	cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+			 }
+			 for(int k=0;k<snakebody.size();k++)
+			 {
+			 	if(snakebody[k].X==A&&snakebody[k].Y==B)
+			 	{
+			 		system("cls");
+		     	cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+				 }
+			 }
+		}
+		     break;
+		case 80: 
+		{
+		     A++;
+			 if(A==30)
+		     {
+		     	system("cls");
+		     		cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+			 } 
+			 for(int k=0;k<snakebody.size();k++)
+			 {
+			 	if(snakebody[k].X==A&&snakebody[k].Y==B)
+			 	{
+			 		system("cls");
+		     	cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+				 }
+			 }
+		}
+			 break;
+		case 77: 
+		{
+		     B++;
+		     if(B==50)
+		     {
+		     	system("cls");
+		     		cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+			 }
+			 for(int k=0;k<snakebody.size();k++)
+			 {
+			 	if(snakebody[k].X==A&&snakebody[k].Y==B)
+			 	{
+			 		system("cls");
+		     	cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+				 }
+			 }
+		}
+			 break;
+		case 75:
+		{ 
+		     B--;
+		     if(B==0)
+		     {
+		     	system("cls");
+		     	cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+			 }
+			 for(int k=0;k<snakebody.size();k++)
+			 {
+			 	if(snakebody[k].X==A&&snakebody[k].Y==B)
+			 	{
+			 		system("cls");
+		     	cout<<"GAME OVER"<<endl<<"Score: "<<score-1;
+		     	exit (0);
+				 }
+			 }
+			 break;
+		}
+	}
+	
+	if(A==row&&B==col)
+	{
+		score++;
+	
+		randomnum();
+	}
+	 pos.X=A;
+	pos.Y=B;
+	snakebody.push_back(pos);
+		if(snakebody.size()>score)
+	{
+		snakebody.erase(snakebody.begin());
+	} 
+}
+int main()
+{
+    pos.X=5;
+	pos.Y=5;
+	snakebody.push_back(pos);
+    srand(time(NULL));
+        row=(rand()%28)+2;
+        col=(rand()%48)+2;
+        
+  
+	while(true){
+		Sleep(50);
+    board();
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),{0,0});
+	if(kbhit())
+	{
+	 switch(getch())
+	 {
+	 	case 72:
+	 		move1=72;
+	 		break;
+	 	case 80:
+	 		move1=80;
+	 		break;
+	 	case 77:
+	 	    move1=77;
+	 		break;
+	 	case 75:
+	 		move1=75;
+	 		break;
+	 }	
+	}
+	movesnake();
+}	
+}
+ 
